@@ -80,3 +80,9 @@ variable role_allow_login {
   default     = false
   description = "Defines whether role is allowed to log in. Roles without this attribute are useful for managing database privileges, but are not users in the usual sense of the word. Default value is false."
 }
+
+variable role_password {
+  type        = string
+  default     = ""
+  description = "Role password (default is random-generated)"
+}

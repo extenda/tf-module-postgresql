@@ -1,5 +1,5 @@
 output role_password {
-  value     = random_password.password.result
+  value     = var.role_password != "" ? var.role_password : random_password.password[0].result
   sensitive = true
 }
 
