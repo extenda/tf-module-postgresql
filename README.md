@@ -2,160 +2,39 @@
 
 ## Description
 
-An Extenda Retail maintained Terraform Module, which is intended to create create and modify PostgreSQL resources.
+An Extenda Retail maintained Terraform Module, which is intended to create and modify PostgreSQL resources.
 
 ## Providers
 
 | Name   | Version   |
 |:-------|:----------|
-| postgresql | n/a    |
-| random | n/a|
-
+| postgresql | n/a |
+| random | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
-
-
-
-
-
+| allow\_connections | If false then no one can connect to this database. The default is true, allowing connections (except as restricted by other mechanisms, such as GRANT or REVOKE CONNECT) | `string` | `true` | no |
+| connect\_timeout | Maximum wait for connection, in seconds. The default is 15s. Zero or not specified means wait indefinitely | `string` | `15` | no |
+| connection\_limit | How many concurrent connections can be established to this database. -1 (the default) means no limit | `string` | `-1` | no |
+| database | Database to connect to | `string` | `default` | no |
+| db\_name | The name of the database. Must be unique on the PostgreSQL server instance where it is configured | `string` | n\a | yes |
 | host | The address for the postgresql server connection | `string` | n/a | yes |
+| lc\_collate | Collation order (LC_COLLATE) to use in the database. This affects the sort order applied to strings, e.g. in queries with ORDER BY, as well as the order used in indexes on text columns. If unset or set to an empty string the default collation is set to C. If set to DEFAULT Terraform will use the same collation order as the specified template database. Changing this value will force the creation of a new resource as this value can only be changed when a database is created | `string` | `C` | no |
+| password | Password for the server connection | `string` | n/a | yes |
 | port | The port for the postgresql server connection | `string` | `5432` | no |
-| database | Database to connect to | `string` | `default` | n/a |
-| username | Username for the server connection | `string` | `default` | n/a |
-| password | Password for the server connection | `string` | 
-
-variable password {
-  type        = string
-  description = "Password for the server connection."
-}
-
-variable sslmode {
-  type        = string
-  default     = "require"
-  description = "Set the priority for an SSL connection to the server. disable, require, verify-ca, or verify-full"
-}
-
-variable connect_timeout {
-  type        = string
-  default     = 15
-  description = "Maximum wait for connection, in seconds. The default is 15s. Zero or not specified means wait indefinitely."
-}
-
-# Database Variables
-variable db_name {
-  type        = string
-  description = "The name of the database. Must be unique on the PostgreSQL server instance where it is configured."
-}
-
-variable template {
-  type        = string
-  default     = "template0"
-  description = "The name of the template database from which to create the database, or DEFAULT to use the default template (template0). NOTE: the default in Terraform is template0, not template1. Changing this value will force the creation of a new resource as this value can only be changed when a database is created."
-}
-
-variable lc_collate {
-  type        = string
-  default     = "C"
-  description = "Collation order (LC_COLLATE) to use in the database. This affects the sort order applied to strings, e.g. in queries with ORDER BY, as well as the order used in indexes on text columns. If unset or set to an empty string the default collation is set to C. If set to DEFAULT Terraform will use the same collation order as the specified template database. Changing this value will force the creation of a new resource as this value can only be changed when a database is created."
-}
-
-variable connection_limit {
-  type        = string
-  default     = -1
-  description = "How many concurrent connections can be established to this database. -1 (the default) means no limit."
-}
-
-variable allow_connections {
-  type        = string
-  default     = true
-  description = "If false then no one can connect to this database. The default is true, allowing connections (except as restricted by other mechanisms, such as GRANT or REVOKE CONNECT)."
-}
-
-# Role Variables
-variable role_name {
-  type        = string
-  description = "The name of the role. Must be unique on the PostgreSQL server instance where it is configured."
-}
-
-variable role_allow_login {
-  type        = string
-  default     = false
-  description = "Defines whether role is allowed to log in. Roles without this attribute are useful for managing database privileges, but are not users in the usual sense of the word. Default value is false."
-}
-
-variable role_password {
-  type        = string
-  default     = ""
-  description = "Role password (default is random-generated)"
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-| activate\_apis | The list of apis to activate within the project | `list(string)` | n/a | yes |
-| billing\_account | The ID of the billing account to associate this project with | `any` | n/a | yes |
-| bucket\_name | The name of the bucket that will contain terraform state - must be globally unique | `any` | n/a | yes |
-| ci\_cd\_sa | Map of IAM Roles to assign to the CI/CD Pipeline Service Account | <pre>list(object({<br>    name      = string<br>    iam_roles = list(string)<br>  }))</pre> | <pre>[<br>  {<br>    "iam_roles": [<br>      "roles/iam.serviceAccountUser",<br>      "roles/run.admin",<br>      "roles/storage.admin"<br>    ],<br>    "name": "ci-cd-pipeline"<br>  }<br>]</pre> | no |
-| clan\_gsuite\_group | The name of the clan group that needs to be added to the Service GSuite Group | `string` | `""` | no |
-| cloudrun\_sa | Map of IAM Roles to assign to the CloudRun Runtime Service Account | <pre>list(object({<br>    name      = string<br>    iam_roles = list(string)<br>  }))</pre> | <pre>[<br>  {<br>    "iam_roles": [<br>      "roles/editor",<br>      "roles/secretmanager.secretAccessor"<br>    ],<br>    "name": "cloudrun-runtime"<br>  }<br>]</pre> | no |
-| create\_ci\_cd\_group | If the Service GSuite Group should be created for the CI/CD Service Account | `bool` | `false` | no |
-| create\_ci\_cd\_service\_account | If the CI/CD Service Account should be created | `bool` | `true` | no |
-| create\_cloudrun\_group | If the Service GSuite Group should be created for the CloudRun Runtime Service Account | `bool` | `false` | no |
-| create\_cloudrun\_service\_account | If the CloudRun Runtime Service Account should be created | `bool` | `true` | no |
-| create\_sa | If the Service Account should be created | `bool` | `true` | no |
-| create\_secret\_manager\_group | If the Service GSuite Group should be created for the Secret Manager Access Service Account | `bool` | `false` | no |
-| create\_secret\_manager\_service\_account | If the Secret Manager Access Service Account should be created | `bool` | `false` | no |
-| create\_service\_sa | If the Service Account for new Services should be created | `bool` | `true` | no |
-| create\_services\_group | If the Service GSuite Group should be created for the Services (services variable) | `bool` | `true` | no |
-| credentials | JSON encoded service account credentials file with rights to run the Project Factory. If this file is absent Terraform will fallback to GOOGLE\_APPLICATION\_CREDENTIALS env variable. | `any` | n/a | yes |
-| default\_service\_account | Project default service account setting: can be one of delete, deprivilege, disable, or keep. | `string` | `"deprivilege"` | no |
-| dns\_project\_iam\_roles | List of IAM Roles to add to DNS project | `list(string)` | <pre>[<br>  "roles/dns.admin"<br>]</pre> | no |
-| dns\_project\_id | ID of the project hosting Google Cloud DNS | `string` | `""` | no |
-| domain | Domain name of the Organization | `string` | n/a | yes |
-| env\_name | Environment name (staging/prod). Creation of some resources depends on env\_name | `string` | `""` | no |
-| folder\_id | The ID of a folder to host this project | `any` | n/a | yes |
-| gcr\_project\_iam\_roles | List of IAM Roles to add GCR project | `list(string)` | <pre>[<br>  "roles/storage.admin"<br>]</pre> | no |
-| gcr\_project\_id | ID of the project hosting Google Container Registry | `string` | `""` | no |
-| impersonated\_user\_email | Email account of GSuite Admin user to impersonate for creating GSuite Groups. If not provided, will default to `terraform@<var.domain>` | `string` | `""` | no |
-| labels | Map of labels for the project | `map(string)` | `{}` | no |
-| name | The name for the project | `any` | n/a | yes |
-| org\_id | The organization ID | `any` | n/a | yes |
-| parent\_project\_iam\_roles | List of IAM Roles to add to the parent project | `list(string)` | <pre>[<br>  "roles/container.admin",<br>  "roles/iam.serviceAccountUser"<br>]</pre> | no |
-| parent\_project\_id | ID of the project to which add additional IAM roles for current project's CI/CD service account. Ignore if empty | `string` | `""` | no |
-| random\_project\_id | Adds a suffix of 4 random characters to the project\_id | `bool` | `true` | no |
-| secret\_manager\_sa | Map of IAM Roles to assign to the Secret Manager Access Service Account |  <pre>list(object({<br>    name      = string<br>    iam_roles = list(string)<br>  }))</pre>  | <pre>[<br>  {<br>    "iam_roles": [<br>      "roles/secretmanager.secretAccessor"<br>    ],<br>    "name": "secret-accessor"<br>  }<br>]</pre> | no |
-| service\_group\_name | The name of the group that will be created for a service | `string` | `""` | no |
-| service\_accounts | Map of IAM Roles to assign to the Service Account |  <pre>list(object({<br>    name      = string<br>    iam_roles = list(string)<br>  }))</pre>  | [] | no |
-| services | Map of IAM Roles to assign to the Services Service Account |  <pre>list(object({<br>    name      = string<br>    iam_roles = list(string)<br>  }))</pre>  | [] | no |
-| shared\_vpc | The ID of the host project which hosts the shared VPC | `string` | `""` | no |
-| shared\_vpc\_subnets | List of subnets fully qualified subnet IDs (ie. projects/$project\_id/regions/$region/subnetworks/$subnet\_id) | `list(string)` | `[]` | no |
+| role\_allow\_login | Defines whether role is allowed to log in. Roles without this attribute are useful for managing database privileges, but are not users in the usual sense of the word. Default value is false | `string` | `false` | no |
+| role\_name | The name of the role. Must be unique on the PostgreSQL server instance where it is configured | `string` | n/a | yes |
+| role\_password | Role password (default is random-generated) | `string` | `""` | no |
+| sslmode | Set the priority for an SSL connection to the server. disable, require, verify-ca, or verify-full | `string` | `require` | no |
+| template | The name of the template database from which to create the database, or DEFAULT to use the default template (template0). NOTE: the default in Terraform is template0, not template1. Changing this value will force the creation of a new resource as this value can only be changed when a database is created | `string` | `template0` | no |
+| username | Username for the server connection | `string` | `default` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| ci\_cd\_service\_account\_email | The CI/CD pipeline service account email |
-| ci\_cd\_service\_account\_private\_key\_encoded | The CI/CD pipeline service account base64 encoded JSON key |
-| cloudrun\_service\_account\_email | The Cloud Run service account email |
-| gsuite\_group\_email | The GSuite group emails created per each service |
-| project\_id | The project ID |
-| project\_name | The project name |
-| secret\_manager\_service\_account\_private\_key\_encoded | The Cloud Run service account base64 encoded JSON key |
-| service\_account\_email | The default service acccount email |
-| service\_account\_emails | The service account emails created by service-account submodule |
-| service\_account\_private\_keys\_encoded | Service accounts base64 encoded JSON keys |
-| service\_emails | Services service account emails |
-| terraform\_state\_bucket | Bucket for saving terraform state of project resources |
+| db\_name | The name of the database. Must be unique on the PostgreSQL server instance where it is configured |
+| role\_name | The name of the role. Must be unique on the PostgreSQL server instance where it is configured |
+| role\_password | Role password (default is random-generated) |
