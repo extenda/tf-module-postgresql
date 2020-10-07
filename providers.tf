@@ -1,3 +1,14 @@
+terraform {
+  required_providers {
+    postgresql = {
+      source = "terraform-providers/postgresql"
+    }
+    random = {
+      source = "hashicorp/random"
+    }
+  }
+}
+
 provider postgresql {
   host            = var.host
   port            = var.port
