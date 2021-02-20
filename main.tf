@@ -1,8 +1,7 @@
 resource "random_password" "password" {
   count            = var.role_password != "" ? 0 : 1
   length           = 16
-  special          = true
-  override_special = "_%@"
+  special          = false
 }
 
 resource "postgresql_role" "my_role" {
