@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     postgresql = {
-      source = "terraform-providers/postgresql"
+      source = "cyrilgdn/postgresql"
     }
     random = {
       source = "hashicorp/random"
